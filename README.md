@@ -52,9 +52,9 @@ typedef enum {
 
 #####属性说明
 ```Objective-C
-@property (nonatomic, strong) NSArray *sectionTitles;
-@property (nonatomic, strong) NSArray *sectionImages;
-@property (nonatomic, strong) NSArray *sectionSelectedImages;
+@property (nonatomic, strong) NSArray *sectionTitles;			// title 数组
+@property (nonatomic, strong) NSArray *sectionImages;			// Image 数组
+@property (nonatomic, strong) NSArray *sectionSelectedImages;		// title&Image 数组
 ```
 
 #####方法说明
