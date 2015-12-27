@@ -62,10 +62,6 @@
 				340A41BC1C2F89BA00839D67 /* AppDelegate.m */,
 				340A41BE1C2F89BA00839D67 /* ViewController.h */,
 				340A41BF1C2F89BA00839D67 /* ViewController.m */,
-				340A41C11C2F89BA00839D67 /* Main.storyboard */,
-				340A41C41C2F89BA00839D67 /* Assets.xcassets */,
-				340A41C61C2F89BA00839D67 /* LaunchScreen.storyboard */,
-				340A41C91C2F89BA00839D67 /* Info.plist */,
 				340A41B81C2F89BA00839D67 /* Supporting Files */,
 			);
 			path = JRSegmentedControl;
@@ -74,6 +70,10 @@
 		340A41B81C2F89BA00839D67 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				340A41C11C2F89BA00839D67 /* Main.storyboard */,
+				340A41C41C2F89BA00839D67 /* Assets.xcassets */,
+				340A41C61C2F89BA00839D67 /* LaunchScreen.storyboard */,
+				340A41C91C2F89BA00839D67 /* Info.plist */,
 				340A41B91C2F89BA00839D67 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -264,6 +264,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JRSegmentedControl/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = clib.sariel.lijin.JRSegmentedControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -275,6 +276,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JRSegmentedControl/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = clib.sariel.lijin.JRSegmentedControl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
