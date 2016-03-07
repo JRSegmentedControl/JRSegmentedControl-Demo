@@ -8,24 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		340A41BA1C2F89BA00839D67 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A41B91C2F89BA00839D67 /* main.m */; };
-		340A41BD1C2F89BA00839D67 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A41BC1C2F89BA00839D67 /* AppDelegate.m */; };
-		340A41C01C2F89BA00839D67 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A41BF1C2F89BA00839D67 /* ViewController.m */; };
 		340A41C31C2F89BA00839D67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 340A41C11C2F89BA00839D67 /* Main.storyboard */; };
 		340A41C51C2F89BA00839D67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 340A41C41C2F89BA00839D67 /* Assets.xcassets */; };
 		340A41C81C2F89BA00839D67 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 340A41C61C2F89BA00839D67 /* LaunchScreen.storyboard */; };
+		C48CF0521C8D6C59006FC8E4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C48CF04C1C8D6C59006FC8E4 /* AppDelegate.m */; };
+		C48CF0531C8D6C59006FC8E4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C48CF04E1C8D6C59006FC8E4 /* ViewController.m */; };
+		C48CF0541C8D6C59006FC8E4 /* JRSegmentControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C48CF0511C8D6C59006FC8E4 /* JRSegmentControl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		340A41B51C2F89BA00839D67 /* JRSegmentedControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JRSegmentedControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		340A41B91C2F89BA00839D67 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		340A41BB1C2F89BA00839D67 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		340A41BC1C2F89BA00839D67 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		340A41BE1C2F89BA00839D67 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		340A41BF1C2F89BA00839D67 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		340A41C21C2F89BA00839D67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		340A41C41C2F89BA00839D67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		340A41C71C2F89BA00839D67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		340A41C91C2F89BA00839D67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C48CF04B1C8D6C59006FC8E4 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C48CF04C1C8D6C59006FC8E4 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C48CF04D1C8D6C59006FC8E4 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		C48CF04E1C8D6C59006FC8E4 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C48CF0501C8D6C59006FC8E4 /* JRSegmentControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSegmentControl.h; sourceTree = "<group>"; };
+		C48CF0511C8D6C59006FC8E4 /* JRSegmentControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSegmentControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +61,7 @@
 		340A41B71C2F89BA00839D67 /* JRSegmentedControl */ = {
 			isa = PBXGroup;
 			children = (
-				340A41BB1C2F89BA00839D67 /* AppDelegate.h */,
-				340A41BC1C2F89BA00839D67 /* AppDelegate.m */,
-				340A41BE1C2F89BA00839D67 /* ViewController.h */,
-				340A41BF1C2F89BA00839D67 /* ViewController.m */,
+				C48CF0491C8D6C59006FC8E4 /* Classes */,
 				340A41B81C2F89BA00839D67 /* Supporting Files */,
 			);
 			path = JRSegmentedControl;
@@ -77,6 +77,35 @@
 				340A41B91C2F89BA00839D67 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C48CF0491C8D6C59006FC8E4 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C48CF04A1C8D6C59006FC8E4 /* Controllers */,
+				C48CF04F1C8D6C59006FC8E4 /* SegmentControl */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		C48CF04A1C8D6C59006FC8E4 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C48CF04B1C8D6C59006FC8E4 /* AppDelegate.h */,
+				C48CF04C1C8D6C59006FC8E4 /* AppDelegate.m */,
+				C48CF04D1C8D6C59006FC8E4 /* ViewController.h */,
+				C48CF04E1C8D6C59006FC8E4 /* ViewController.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C48CF04F1C8D6C59006FC8E4 /* SegmentControl */ = {
+			isa = PBXGroup;
+			children = (
+				C48CF0501C8D6C59006FC8E4 /* JRSegmentControl.h */,
+				C48CF0511C8D6C59006FC8E4 /* JRSegmentControl.m */,
+			);
+			path = SegmentControl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,8 +178,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				340A41C01C2F89BA00839D67 /* ViewController.m in Sources */,
-				340A41BD1C2F89BA00839D67 /* AppDelegate.m in Sources */,
+				C48CF0531C8D6C59006FC8E4 /* ViewController.m in Sources */,
+				C48CF0541C8D6C59006FC8E4 /* JRSegmentControl.m in Sources */,
+				C48CF0521C8D6C59006FC8E4 /* AppDelegate.m in Sources */,
 				340A41BA1C2F89BA00839D67 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,6 +332,7 @@
 				340A41CE1C2F89BA00839D67 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
