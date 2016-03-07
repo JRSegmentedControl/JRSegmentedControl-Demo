@@ -325,7 +325,22 @@
 			break;
 		}
 	}
+	
+	CGRect frame = [self.backFrames[self.segmentSelectedIndex] CGRectValue];
+	
+	if (frame.size.width < self.frame.size.width) {
+		CGFloat itemX = frame.origin.x - (self.frame.size.width - frame.size.width) * 0.5;
+		if (itemX < 0) {
+			itemX = 0;
+		}
+
+		CGRect newFrame = CGRectMake(itemX, 0, self.frame.size.width, 1);
+		[self.scrollView scrollRectToVisible:newFrame animated:YES];
+	}
+
 }
+
+
 
 @end
 
