@@ -82,8 +82,8 @@
 		C48CF0491C8D6C59006FC8E4 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C48CF0551C8D6DC0006FC8E4 /* Controllers */,
 				C48CF04F1C8D6C59006FC8E4 /* SegmentControl */,
+				C48CF0551C8D6DC0006FC8E4 /* Controllers */,
 			);
 			path = Classes;
 			sourceTree = "<group>";

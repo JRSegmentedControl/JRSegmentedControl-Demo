@@ -12,7 +12,7 @@ typedef enum : NSUInteger {
 	JRSegmentItemFixedWidth,
 	JRSegmentItemFixedWidthFull,
 	JRSegmentItemDynamicWidth,
-	JRSegmentItemDynamicWidthFull
+	JRSegmentItemDynamicWidthFull	// 未使用
 } JRSegmentItemWidthType;
 
 @interface JRSegmentControl : UIControl
@@ -54,5 +54,8 @@ typedef enum : NSUInteger {
  *  @return 返回 JRSegmentControl
  */
 - (instancetype)initWithTitles:(NSArray *)titles;
+
+
+- (void)setSegmentSelectedIndex:(NSInteger)segmentSelectedIndex animation:(BOOL)animation;
 
 @end

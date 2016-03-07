@@ -41,7 +41,6 @@
 @end
 
 
-
 @interface JRSegmentControl ()
 @property (nonatomic, strong) JRScrollView		*scrollView;					// scrollView
 @property (nonatomic, assign) NSInteger			countOfItems;					// Item数量
@@ -53,7 +52,7 @@
 
 @property (nonatomic, assign) double			totleWidth;						// 总宽度
 @property (nonatomic, assign) double			totleHeight;					// 总高度
-@property (nonatomic, strong) NSMutableArray	*backLayerFrame;				// 背景Frame
+@property (nonatomic, assign) CGFloat			maxWidth;						// Item 最大宽度
 
 @property (nonatomic, strong) NSDictionary		*titleTextAttributes;			// 正常文本属性
 @property (nonatomic, strong) NSDictionary		*titleTextAttributesSelected;	// 选中文本属性
@@ -96,7 +95,6 @@
 	
 	// 3. Rect 数组
 	self.itemFrames = [[NSMutableArray alloc] init];
-	self.backLayerFrame = [NSMutableArray array];
 	
 	// 4. backgroundColor
 	self.backgroundColor = [UIColor whiteColor];
@@ -163,13 +161,45 @@
 	[self.backFrames removeAllObjects];
 	[self.tipFrames  removeAllObjects];
 	
+	switch (self.segmentWidthType) {
+		case JRSegmentItemFixedWidth:
+			[self updateWithItemFixedWidth];
+			break;
+		case JRSegmentItemFixedWidthFull:
+			[self updateWithItemFixedWidthFull];
+			break;
+		case JRSegmentItemDynamicWidth:
+			[self updateWithItemDynamicWidth];
+			break;
+		case JRSegmentItemDynamicWidthFull:
+			[self updateWithItemDynamicWidthFull];
+			break;
+		default:
+			[self updateWithItemFixedWidth];
+			break;
+	}
+	
+	// 4. titles 总宽度
+	CGRect frame = [[self.itemFrames lastObject] CGRectValue];
+	self.totleWidth = CGRectGetMaxX(frame);
+	if (self.totleWidth <= self.frame.size.width) {
+		self.scrollView.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+	} else {
+		self.scrollView.contentSize = CGSizeMake(self.totleWidth, self.frame.size.height);
+	}
+	
+	[self setNeedsDisplay];
+}
+
+// JRSegmentItemFixedWidth
+- (void)updateWithItemFixedWidth {
 	// 1. 计算 itemSizes
 	for (int i=0; i<self.titles.count; i++) {
 		CGSize size = [self sizeOfTitleAtIndex:i];
 		size.width  += self.itemMargin;											// size 宽度 + margin
 		[self.itemSizes addObject:[NSValue valueWithCGSize:size]];
 	}
-
+	
 	// 2. 计算itemFrames
 	self.proRect = CGRectZero;
 	for (int i = 0; i < self.titles.count; i++) {
@@ -193,18 +223,141 @@
 		CGRect tipFame = CGRectMake(frame.origin.x, tipY, frame.size.width ,self.selectedTipHeight);
 		[self.tipFrames addObject:[NSValue valueWithCGRect:tipFame]];
 	}
-	
-	// 4. titles 总宽度
-	CGRect frame = [[self.itemFrames lastObject] CGRectValue];
-	self.totleWidth = CGRectGetMaxX(frame);
-	
-	if (self.totleWidth <= self.frame.size.width) {
-		self.scrollView.contentSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
-	} else {
-		self.scrollView.contentSize = CGSizeMake(self.totleWidth, self.frame.size.height);
+}
+
+- (void)updateWithItemFixedWidthFull {
+	// 1. 计算 itemSizes
+	self.maxWidth = 0.0;
+	for (int i=0; i<self.titles.count; i++) {
+		CGSize size = [self sizeOfTitleAtIndex:i];
+		size.width  += self.itemMargin;											// size 宽度 + margin
+		[self.itemSizes addObject:[NSValue valueWithCGSize:size]];
+		if (self.maxWidth < size.width) {
+			self.maxWidth = size.width;
+		}
 	}
 	
-	[self setNeedsDisplay];
+	if (self.maxWidth * self.titles.count < self.frame.size.width) {
+		self.maxWidth = self.frame.size.width / self.titles.count;
+		for (int i = 0; i < self.itemSizes.count; i++) {
+			CGSize size = [self.itemSizes[i] CGSizeValue];
+			size.width = self.maxWidth;
+			[self.itemSizes replaceObjectAtIndex:i withObject:[NSValue valueWithCGSize:size]];
+		}
+	}
+	
+	// 2. 计算itemFrames
+	self.proRect = CGRectZero;
+	for (int i = 0; i < self.titles.count; i++) {
+		CGFloat itemX	= CGRectGetMaxX(self.proRect);
+		CGSize size		= [self.itemSizes[i] CGSizeValue];
+		CGFloat itemY	= 0.0;
+		if (self.frame.size.height > size.height) {
+			itemY = (self.frame.size.height - size.height) * 0.5;
+		}
+		CGRect frame	= CGRectMake(itemX, itemY, size.width, size.height);
+		CGRect backF	= CGRectMake(itemX, 0, size.width, self.frame.size.height);
+		self.proRect	= frame;
+		[self.itemFrames addObject:[NSValue valueWithCGRect:frame]];
+		[self.backFrames addObject:[NSValue valueWithCGRect:backF]];
+	}
+	
+	// 3. TipFrame
+	for (int i = 0; i < self.titles.count; i++) {
+		CGRect frame = [self.backFrames[i] CGRectValue];
+		CGFloat tipY = frame.size.height - self.selectedTipHeight;
+		CGRect tipFame = CGRectMake(frame.origin.x, tipY, frame.size.width ,self.selectedTipHeight);
+		[self.tipFrames addObject:[NSValue valueWithCGRect:tipFame]];
+	}
+}
+
+- (void)updateWithItemDynamicWidth {
+	// 1. 计算 itemSizes
+	self.maxWidth = 0.0;
+	for (int i=0; i<self.titles.count; i++) {
+		CGSize size = [self sizeOfTitleAtIndex:i];
+		size.width  += self.itemMargin;											// size 宽度 + margin
+		[self.itemSizes addObject:[NSValue valueWithCGSize:size]];
+		if (self.maxWidth < size.width) {
+			self.maxWidth = size.width;
+		}
+	}
+	
+	for (int i = 0; i < self.itemSizes.count; i++) {
+		CGSize size = [self.itemSizes[i] CGSizeValue];
+		size.width = self.maxWidth;
+		[self.itemSizes replaceObjectAtIndex:i withObject:[NSValue valueWithCGSize:size]];
+	}
+	
+	// 2. 计算itemFrames
+	self.proRect = CGRectZero;
+	for (int i = 0; i < self.titles.count; i++) {
+		CGFloat itemX	= CGRectGetMaxX(self.proRect);
+		CGSize size		= [self.itemSizes[i] CGSizeValue];
+		CGFloat itemY	= 0.0;
+		if (self.frame.size.height > size.height) {
+			itemY = (self.frame.size.height - size.height) * 0.5;
+		}
+		CGRect frame	= CGRectMake(itemX, itemY, size.width, size.height);
+		CGRect backF	= CGRectMake(itemX, 0, size.width, self.frame.size.height);
+		self.proRect	= frame;
+		[self.itemFrames addObject:[NSValue valueWithCGRect:frame]];
+		[self.backFrames addObject:[NSValue valueWithCGRect:backF]];
+	}
+	
+	// 3. TipFrame
+	for (int i = 0; i < self.titles.count; i++) {
+		CGRect frame = [self.backFrames[i] CGRectValue];
+		CGFloat tipY = frame.size.height - self.selectedTipHeight;
+		CGRect tipFame = CGRectMake(frame.origin.x, tipY, frame.size.width ,self.selectedTipHeight);
+		[self.tipFrames addObject:[NSValue valueWithCGRect:tipFame]];
+	}
+}
+
+- (void)updateWithItemDynamicWidthFull {
+	// 1. 计算 itemSizes
+	self.maxWidth = 0.0;
+	for (int i=0; i<self.titles.count; i++) {
+		CGSize size = [self sizeOfTitleAtIndex:i];
+		size.width  += self.itemMargin;											// size 宽度 + margin
+		[self.itemSizes addObject:[NSValue valueWithCGSize:size]];
+		if (self.maxWidth < size.width) {
+			self.maxWidth = size.width;
+		}
+	}
+	
+	if (self.maxWidth * self.titles.count < self.frame.size.width) {
+				self.maxWidth = self.frame.size.width / self.titles.count;
+		for (int i = 0; i < self.itemSizes.count; i++) {
+			CGSize size = [self.itemSizes[i] CGSizeValue];
+			size.width = self.maxWidth;
+			[self.itemSizes replaceObjectAtIndex:i withObject:[NSValue valueWithCGSize:size]];
+		}
+	}
+	
+	// 2. 计算itemFrames
+	self.proRect = CGRectZero;
+	for (int i = 0; i < self.titles.count; i++) {
+		CGFloat itemX	= CGRectGetMaxX(self.proRect);
+		CGSize size		= [self.itemSizes[i] CGSizeValue];
+		CGFloat itemY	= 0.0;
+		if (self.frame.size.height > size.height) {
+			itemY = (self.frame.size.height - size.height) * 0.5;
+		}
+		CGRect frame	= CGRectMake(itemX, itemY, size.width, size.height);
+		CGRect backF	= CGRectMake(itemX, 0, size.width, self.frame.size.height);
+		self.proRect	= frame;
+		[self.itemFrames addObject:[NSValue valueWithCGRect:frame]];
+		[self.backFrames addObject:[NSValue valueWithCGRect:backF]];
+	}
+	
+	// 3. TipFrame
+	for (int i = 0; i < self.titles.count; i++) {
+		CGRect frame = [self.backFrames[i] CGRectValue];
+		CGFloat tipY = frame.size.height - self.selectedTipHeight;
+		CGRect tipFame = CGRectMake(frame.origin.x, tipY, frame.size.width ,self.selectedTipHeight);
+		[self.tipFrames addObject:[NSValue valueWithCGRect:tipFame]];
+	}
 }
 
 #pragma mark - drawRect
@@ -227,7 +380,7 @@
 	}
 	
 	[CATransaction begin];
-	[CATransaction setAnimationDuration:0.15f];
+	[CATransaction setAnimationDuration:0.25f];
 	
 	CGRect tipFrame = [self.tipFrames[self.segmentSelectedIndex] CGRectValue];
 	self.selectionIndicatorStripLayer.backgroundColor = self.selectedTipColor.CGColor;
@@ -288,7 +441,7 @@
 		return _titleTextAttributes;
 	}
 	NSDictionary *defaults = @{
-							   NSFontAttributeName : [UIFont systemFontOfSize:19.0f],
+							   NSFontAttributeName : [UIFont systemFontOfSize:18.0f],
 							   NSForegroundColorAttributeName : [UIColor whiteColor],
 							   };
 	return _titleTextAttributes = [NSMutableDictionary dictionaryWithDictionary:defaults].copy;
@@ -300,7 +453,7 @@
 	}
 	
 	NSDictionary *defaults = @{
-							   NSFontAttributeName : [UIFont systemFontOfSize:22.0f],
+							   NSFontAttributeName : [UIFont systemFontOfSize:20.0f],
 							   NSForegroundColorAttributeName : [UIColor blackColor],
 							   };
 	return _titleTextAttributesSelected = [NSMutableDictionary dictionaryWithDictionary:defaults].copy;
@@ -311,6 +464,13 @@
 - (void)setSegmentSelectedIndex:(NSInteger)segmentSelectedIndex {
 	_segmentSelectedIndex = segmentSelectedIndex;
 	[self updateSegmentsRects];
+	[self scrollViewMoveToCenterWithAnimation:YES];
+}
+
+- (void)setSegmentSelectedIndex:(NSInteger)segmentSelectedIndex animation:(BOOL)animation {
+	_segmentSelectedIndex = segmentSelectedIndex;
+	[self updateSegmentsRects];
+	[self scrollViewMoveToCenterWithAnimation:animation];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -325,36 +485,33 @@
 			break;
 		}
 	}
-	
+	[self scrollViewMoveToCenterWithAnimation:YES];
+}
+
+- (void)scrollViewMoveToCenterWithAnimation:(BOOL)animation {
 	CGRect frame = [self.backFrames[self.segmentSelectedIndex] CGRectValue];
 	
 	if (frame.size.width < self.frame.size.width) {
 		CGFloat itemX = frame.origin.x - (self.frame.size.width - frame.size.width) * 0.5;
+		CGFloat itemW = self.frame.size.width;
 		if (itemX < 0) {
 			itemX = 0;
 		}
-
+		
+		if ((itemX + itemW) > self.scrollView.contentSize.width) {
+			itemW = self.scrollView.contentSize.width - itemX;
+		}
+		
+		CGRect newFrame = CGRectMake(itemX, 0, itemW, 1);
+		[self.scrollView scrollRectToVisible:newFrame animated:animation];
+	} else {
+		
+		CGFloat itemX = frame.origin.x + (frame.size.width - self.frame.size.width) * 0.5;
 		CGRect newFrame = CGRectMake(itemX, 0, self.frame.size.width, 1);
-		[self.scrollView scrollRectToVisible:newFrame animated:YES];
+		[self.scrollView scrollRectToVisible:newFrame animated:animation];
 	}
-
 }
 
-
-
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
